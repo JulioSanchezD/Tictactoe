@@ -1,13 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "node.h"
 
 int main() {
-    int grid[3][3] = {{0, 2, 0},
-                      {0, 1, 0},
-                      {0, 0, 0}};
-    int grid2[3][3] = {{0, 2, 1},
-                       {0, 1, 0},
-                       {2, 0, 0}};
-    printf("%d", getScore(grid, 1));
+    char grid[3][3] = {{" OX"},
+                       {" X "},
+                       {"O  "}};
+
+    Node *root = (Node *) malloc(sizeof(Node));
+    memcpy(root->grid, grid, sizeof(grid));
+    root->turn = 'X';
+    root->score = getScore(grid, root->turn);
+    root->depth = 0;
+    root->operator_coord[0] = 2;
+    root->operator_coord[1] = 0;
+
+    printNode(root);
     return 0;
 }
