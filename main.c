@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "node.h"
 
 typedef enum {
@@ -45,13 +46,38 @@ int negamax(Node *parent) {
     return -max;
 }
 
+int random_1(int min, int max){
+    return min + rand() / (RAND_MAX / (max - min + 1) + 1);
+}
+
 int main() {
     setbuf(stdout, 0);
-    int row, col;
+    int row, col, res;
     char grid[3][3] = {{"   "},
                        {"   "},
                        {"   "}};
+
+    // Ask for difficulty level
     level = ultrahard;
+    int i_level;
+    printf("Select difficulty level (3->easy, 5->medium, 10->unbeatable): ");
+    scanf("%d", &i_level);
+    level = (Level) i_level;
+
+    // Ask if player wants to play the first move
+    res = 0;
+    printf("Do you want to play the first move (1->yes, 0->no)?: ");
+    scanf("%d", &res);
+
+    // Let computer play first move
+    if (!res) {
+        srand (time (0));
+        Node *root = newNode(grid, 'X', 0, random_1(0, 2), random_1(0, 2));
+        negamax(root);
+        grid[r_row][r_col] = 'X';
+    }
+
+    // Play the game
     do {
         printGrid(grid);
         printf("Enter your move (row, column): ");
@@ -68,6 +94,8 @@ int main() {
             printf("Bad input, please enter other location between [0, 2]\n");
         }
     } while (countBlankSpaces(grid) != 0 && getScore(grid, 'X') != 100 && getScore(grid, 'O') != 100);
+
+    // Show results
     printGrid(grid);
     if (getScore(grid, 'O') == 100) printf("Congratulations, you won!\n");
     else if (getScore(grid, 'X') == 100) printf("Computer won!\n");
