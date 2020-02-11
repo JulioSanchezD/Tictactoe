@@ -11,6 +11,7 @@ int r_row, r_col;
 
 
 int negamax(Node *parent) {
+    //printNode(parent);
     char turn = (parent->turn == 'O') ? 'X' : 'O';
     int cont, n_siblings, depth, res;
     cont = 0;
@@ -28,7 +29,7 @@ int negamax(Node *parent) {
     max = -200;
     Node *max_sibling;
     for (int i = 0; i < n_siblings; i++) {
-        if (depth == level || n_siblings == 1) {
+        if (depth == level || n_siblings == 1 || siblings[i]->score == abs(100)) {
             score = siblings[i]->score;
         } else {
             score = negamax(siblings[i]);
@@ -56,11 +57,21 @@ int main() {
         printGrid(grid);
         printf("Enter your move (row, column): ");
         scanf("%d %d", &row, &col);
-        Node *root = newNode(grid, 'O', 0, row, col);
-        negamax(root);
-        grid[row][col] = 'O';
-        grid[r_row][r_col] = 'X';
+        if (grid[row][col] == ' ') {
+            Node *root = newNode(grid, 'O', 0, row, col);
+            if (countBlankSpaces(root->grid) > 0){
+                negamax(root);
+                grid[r_row][r_col] = 'X';
+            }
+            grid[row][col] = 'O';
+        }
+        else {
+            printf("Bad input, please enter other location\n");
+        }
     } while (countBlankSpaces(grid) != 0 && getScore(grid, 'X') != abs(100));
     printGrid(grid);
+    if (getScore(grid, 'O') == -100) printf("Congratulations, you won!\n");
+    else if (getScore(grid, 'O') == 100) printf("Computer won!\n");
+    else printf("It's a draw!\n");
     return 0;
 }
