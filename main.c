@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "node.h"
 
 typedef enum {
-    easy = 1, medium = 3, hard = 5, ultrahard = 10
+    easy = 3, medium = 5, ultrahard = 10
 } Level;
 Level level;
 int r_row, r_col;
@@ -57,7 +56,7 @@ int main() {
         printGrid(grid);
         printf("Enter your move (row, column): ");
         scanf("%d %d", &row, &col);
-        if (grid[row][col] == ' ') {
+        if (grid[row][col] == ' ' || row > 2 || col > 2) {
             Node *root = newNode(grid, 'O', 0, row, col);
             if (countBlankSpaces(root->grid) > 0){
                 negamax(root);
@@ -66,12 +65,12 @@ int main() {
             grid[row][col] = 'O';
         }
         else {
-            printf("Bad input, please enter other location\n");
+            printf("Bad input, please enter other location between [0, 2]\n");
         }
-    } while (countBlankSpaces(grid) != 0 && getScore(grid, 'X') != abs(100));
+    } while (countBlankSpaces(grid) != 0 && getScore(grid, 'X') != 100 && getScore(grid, 'O') != 100);
     printGrid(grid);
-    if (getScore(grid, 'O') == -100) printf("Congratulations, you won!\n");
-    else if (getScore(grid, 'O') == 100) printf("Computer won!\n");
+    if (getScore(grid, 'O') == 100) printf("Congratulations, you won!\n");
+    else if (getScore(grid, 'X') == 100) printf("Computer won!\n");
     else printf("It's a draw!\n");
     return 0;
 }

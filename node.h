@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #ifndef TICTACTOE_NODE_H
 #define TICTACTOE_NODE_H
@@ -48,7 +49,8 @@ int getScore(char grid[3][3], char turn) {
             if (grid[row][col] == 'X') found_x++;
             else if (grid[row][col] == 'O') found_o++;
         }
-        if (found_x == 3 || found_o == 3) return 100;
+        if ((found_x == 3 && turn == 'X') || (found_o == 3 && turn == 'O')) return 100;
+        else if ((found_o == 3 && turn == 'X') || (found_x == 3 && turn == 'O')) return -100;
         else if (found_x && !found_o) cost_x++;
         else if (!found_x && found_o) cost_o++;
     }
@@ -60,7 +62,8 @@ int getScore(char grid[3][3], char turn) {
             if (grid[row][col] == 'X') found_x++;
             else if (grid[row][col] == 'O') found_o++;
         }
-        if (found_x == 3 || found_o == 3) return 100;
+        if ((found_x == 3 && turn == 'X') || (found_o == 3 && turn == 'O')) return 100;
+        else if ((found_o == 3 && turn == 'X') || (found_x == 3 && turn == 'O')) return -100;
         else if (found_x && !found_o) cost_x++;
         else if (!found_x && found_o) cost_o++;
     }
@@ -71,7 +74,8 @@ int getScore(char grid[3][3], char turn) {
         if (grid[i][i] == 'X') found_x++;
         else if (grid[i][i] == 'O') found_o++;
     }
-    if (found_x == 3 || found_o == 3) return 100;
+    if ((found_x == 3 && turn == 'X') || (found_o == 3 && turn == 'O')) return 100;
+    else if ((found_o == 3 && turn == 'X') || (found_x == 3 && turn == 'O')) return -100;
     else if (found_x && !found_o) cost_x++;
     else if (!found_x && found_o) cost_o++;
 
@@ -83,7 +87,8 @@ int getScore(char grid[3][3], char turn) {
         else if (grid[row][col] == 'O') found_o++;
         col--;
     }
-    if (found_x == 3 || found_o == 3) return 100;
+    if ((found_x == 3 && turn == 'X') || (found_o == 3 && turn == 'O')) return 100;
+    else if ((found_o == 3 && turn == 'X') || (found_x == 3 && turn == 'O')) return -100;
     if (found_x && !found_o) cost_x++;
     else if (!found_x && found_o) cost_o++;
 
